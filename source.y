@@ -11,9 +11,10 @@ typedef struct Symbol {
 Symbol symb_table[200];
 %}
 %union { int nb; char var; }
-%token tMain tOCB tCCB tConst tInt tAdd tSub tMul tDiv tEQEQ tEQ tOP tCP tCom tSC tIf tWhile tReturn tPrintf tError
+%token tMain tOCB tCCB tConst tInt tAdd tSub tMul tDiv tInf tSup tEQEQ tEQ tOP tCP tCom tSC tIf tWhile tReturn tPrintf tError
 %token <nb> tValInt
 %token <var> tId
+%type <nb> Expr DivMul Term
 %start Compiler
 %%
 Compiler: tInt tMain tOP tCP Body;
@@ -27,7 +28,11 @@ Inst: If
     | Return;
 If: tIf Cond Body;
 While: tWhile Cond Body;
-Cond: tOP Expr tCP;
+Cond: tOP BoolExpr tCP;
+BoolExpr: Expr BoolOpe Expr;
+BoolOpe: tSup
+        | tInf
+        | tEQEQ;
 Expr: Expr tAdd DivMul
      | Expr tSub DivMul
      | DivMul;
@@ -37,11 +42,6 @@ DivMul: DivMul tMul Term
 Term: tOP Expr tCP
     | tValInt
     | tId;
-Ope: tAdd
-    | tSub
-    | tMul
-    | tDiv
-    | tEQEQ ;
 Declaration: tInt tId tSC;
 Affectation: tInt tId tEQ tValInt tSC
             | tId tEQ tValInt tSC

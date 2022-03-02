@@ -16,6 +16,8 @@ L [a-zA-Z]
 "-" return tSub;
 "*" return tMul;
 "/" return tDiv;
+"<" return tInf;
+">" return tSup;
 "==" return tEQEQ;
 "=" return tEQ;
 "(" return tOP;
