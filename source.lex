@@ -1,33 +1,37 @@
+%{
+#include <stdlib.h>
+#include <stdio.h>
+#include "y.tab.h"
+%}
 D [0-9]
-E [Ee][-+]?{D}+
 L [a-zA-Z]
 %%
 [ \t\n]+ ;
-"main" printf("tMain");
-"{" printf("tOCB");
-"}" printf("tCCB");
-"const" printf("tConst");
-"int" printf("tInt");
-"+" printf("tAdd");
-"-" printf("tSub");
-"*" printf("tMul");
-"/" printf("tDiv");
-"=" printf("tEQ");
-"(" printf("tOP");
-")" printf("tCP");
-"," printf("tCom");
-";" printf("tSC");
-"printf" printf("tPrintf");
-{D}+(e{D}+)? { int n = strtold(yytext, NULL); printf("tValInt %s %d\n", yytext, n); }	
-{L}({L}|{D}|\_)* printf("tId");
-. printf("tError\n");
+"main" return tMain;
+"{" return tOCB;
+"}" return tCCB;
+"const" return tConst;
+"int" return tInt;
+"+" return tAdd;
+"-" return tSub;
+"*" return tMul;
+"/" return tDiv;
+"==" return tEQEQ;
+"=" return tEQ;
+"(" return tOP;
+")" return tCP;
+"," return tCom;
+";" return tSC;
+"if" return tIf;
+"while" return tWhile;
+"return" return tReturn;
+"printf" return tPrintf;
+{D}+(e{D}+)? { yylval.nb = (int) strtold(yytext, NULL); return tValInt; }	
+{L}({L}|{D}|\_)* { return tId; };
+. return tError;
 %%
 int yywrap()
 {
 return 1 ;
 }
-int main ()
-{
-yylex() ;
-return 1 ;
-}
+
