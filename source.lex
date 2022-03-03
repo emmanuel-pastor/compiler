@@ -7,11 +7,11 @@ D [0-9]
 L [a-zA-Z]
 %%
 [ \t\n]+ ;
-"main" return tMain;
-"{" return tOCB;
-"}" return tCCB;
+"main" { printf("main\n"); return tMain;}
+"{" {printf("{\n"); return tOCB;}
+"}" {printf("}\n"); return tCCB;}
 "const" return tConst;
-"int" return tInt;
+"int" {printf("int\n"); return tInt;}
 "+" return tAdd;
 "-" return tSub;
 "*" return tMul;
@@ -20,8 +20,8 @@ L [a-zA-Z]
 ">" return tSup;
 "==" return tEQEQ;
 "=" return tEQ;
-"(" return tOP;
-")" return tCP;
+"(" { printf("(\n"); return tOP;}
+")" { printf(")\n"); return tCP;}
 "," return tCom;
 ";" return tSC;
 "if" return tIf;

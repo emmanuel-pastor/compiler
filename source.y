@@ -7,8 +7,16 @@ typedef struct Symbol {
     char* name;
     char* type;
     int addr;
+    int scope;
 } Symbol;
 Symbol symb_table[200];
+typedef struct AsmInst {
+    char* operator;
+    char* op1;
+    char* op2;
+    char* op3;
+} AsmInst;
+AsmInst asm_table[1024];
 %}
 %union { int nb; char var; }
 %token tMain tOCB tCCB tConst tInt tAdd tSub tMul tDiv tInf tSup tEQEQ tEQ tOP tCP tCom tSC tIf tWhile tReturn tPrintf tError
@@ -26,15 +34,14 @@ Inst: If
     | Affectation
     | Print
     | Return;
-If: tIf Cond Body;
-While: tWhile Cond Body;
-Cond: tOP BoolExpr tCP;
-BoolExpr: Expr BoolOpe Expr;
+If: tIf tOP Expr tCP Body;
+While: tWhile tOP Expr tCP Body;
 BoolOpe: tSup
         | tInf
         | tEQEQ;
 Expr: Expr tAdd DivMul
      | Expr tSub DivMul
+     | Expr BoolOpe DivMul
      | DivMul;
 DivMul: DivMul tMul Term
         | DivMul tDiv Term
@@ -46,12 +53,8 @@ Declaration: tInt tId tSC;
 Affectation: tInt tId tEQ tValInt tSC
             | tId tEQ tValInt tSC
             | tId tEQ tId tSC;
-Print: tPrintf tOP Printable tCP tSC;
-Printable: tValInt
-            | tId;
-Return: tReturn Returnable tSC;
-Returnable: tValInt
-            | tId;
+Print: tPrintf tOP Expr tCP tSC;
+Return: tReturn Expr tSC;
 %%
 void yyerror(char *s) { fprintf(stderr, "%s\n", s); }
 int main(void) {

@@ -1,6 +1,6 @@
 GRM=source.y
 LEX=source.lex
-BIN=lexer.exe
+BIN=compiler
 
 CC=gcc
 CFLAGS=-Wall -g
@@ -22,5 +22,5 @@ $(BIN): $(OBJ)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
 
 clean:
-	rm $(OBJ) y.tab.c y.tab.h lex.yy.c y.output
+	rm $(OBJ) y.tab.c y.tab.h lex.yy.c y.output $(BIN)
 
