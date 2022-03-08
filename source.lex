@@ -27,12 +27,13 @@ L [a-zA-Z]
 "=" return tEQ;
 "(" return tOP;
 ")" return tCP;
-"," return tCom;
+"," return tComma;
 ";" return tSC;
 "if" return tIf;
 "while" return tWhile;
 "return" return tReturn;
 "printf" return tPrintf;
+[\/]{2}.* return tCom;
 {D}+(e{D}+)? { yylval.nb = (int) strtold(yytext, NULL); return tValInt; }	
 {L}({L}|{D}|\_)* return tId;
 . return tError;

@@ -19,7 +19,7 @@ typedef struct AsmInst {
 AsmInst asm_table[1024];
 %}
 %union { int nb; char var; }
-%token tMain tOCB tCCB tConst tInt tAdd tSub tMul tDiv tInf tSup tEQEQ tDiff tAnd tOr tEQ tOP tCP tCom tSC tIf tWhile tReturn tPrintf tError
+%token tMain tOCB tCCB tConst tInt tAdd tSub tMul tDiv tInf tSup tEQEQ tDiff tAnd tOr tEQ tOP tCP tComma tSC tIf tWhile tReturn tCom tPrintf tError
 %token <nb> tValInt
 %token <var> tId
 %type <nb> Expr DivMul Term
@@ -33,7 +33,8 @@ Inst: If
     | Declaration
     | Affectation
     | Print
-    | Return;
+    | Return
+    | tCom;
 If: tIf tOP Expr tCP Body;
 While: tWhile tOP Expr tCP Body;
 BoolCheck: tSup
