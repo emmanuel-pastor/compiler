@@ -60,7 +60,6 @@ Print: tPrintf tOP Expr tCP tSC;
 Return: tReturn Expr tSC;
 %%
 int main(void) {
-  printf("Compiler\n"); // yydebug=1;
-  yyparse();
-  return 0;
+  // yydebug=1;
+  return yyparse();
 }

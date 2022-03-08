@@ -9,11 +9,11 @@ L [a-zA-Z]
 %%
 [ \t]+ ;
 [\n] {l++;};
-"main" { printf("main\n"); return tMain;}
-"{" {printf("{\n"); return tOCB;}
-"}" {printf("}\n"); return tCCB;}
+"main" return tMain;
+"{" return tOCB;
+"}" return tCCB;
 "const" return tConst;
-"int" {printf("int\n"); return tInt;}
+"int" return tInt;
 "+" return tAdd;
 "-" return tSub;
 "*" return tMul;
@@ -25,8 +25,8 @@ L [a-zA-Z]
 "and" return tAnd;
 "or" return tOr;
 "=" return tEQ;
-"(" { printf("(\n"); return tOP;}
-")" { printf(")\n"); return tCP;}
+"(" return tOP;
+")" return tCP;
 "," return tCom;
 ";" return tSC;
 "if" return tIf;
@@ -34,11 +34,11 @@ L [a-zA-Z]
 "return" return tReturn;
 "printf" return tPrintf;
 {D}+(e{D}+)? { yylval.nb = (int) strtold(yytext, NULL); return tValInt; }	
-{L}({L}|{D}|\_)* { return tId; };
+{L}({L}|{D}|\_)* return tId;
 . return tError;
 %%
 int yywrap()
 {
 return 1 ;
 }
-void yyerror(char *s) { fprintf(stderr, "%s on line %d\n", s, l); }
+int yyerror(char *s) { fprintf(stderr, "%s on line %d near %s\n", s, l, yytext);}
