@@ -1,15 +1,9 @@
 %{
 #include <stdlib.h>
 #include <stdio.h>
-int var[26];
+#include "symb_table.h"
+
 void yyerror(char *s);
-typedef struct Symbol {
-    char* name;
-    char* type;
-    int addr;
-    int scope;
-} Symbol;
-Symbol symb_table[200];
 typedef struct AsmInst {
     char* operator;
     char* op1;
@@ -18,16 +12,17 @@ typedef struct AsmInst {
 } AsmInst;
 AsmInst asm_table[1024];
 %}
-%union { int nb; char var; }
+%union { int nb; char* var; }
 %token tMain tOCB tCCB tConst tInt tAdd tSub tMul tDiv tInf tSup tEQEQ tDiff tAnd tOr tEQ tOP tCP tComma tSC tIf tWhile tReturn tCom tPrintf tError
 %token <nb> tValInt
 %token <var> tId
-%type <nb> Expr DivMul Term
+%type <nb> ArithExpr DivMul Term
 %start Compiler
 %%
 Compiler: tInt tMain tOP tCP Body;
-Body: tOCB Instructions tCCB;
-Instructions: Inst Instructions | ;
+Body: tOCB Instructions tCCB {decr_scope();};
+Instructions: Inst Instructions
+	| ;
 Inst: If
     | While
     | Declaration
@@ -54,13 +49,14 @@ DivMul: DivMul tMul Term
 Term: tOP Expr tCP
     | tValInt
     | tId;
-Declaration: tInt tId tSC;
-Affectation: tInt tId tEQ Expr tSC
+Declaration: tInt tId tSC {push_symb($2);};
+Affectation: tInt tId tEQ Expr tSC {push_symb($2);}
             | tId tEQ Expr tSC;
 Print: tPrintf tOP Expr tCP tSC;
 Return: tReturn Expr tSC;
 %%
 int main(void) {
   // yydebug=1;
-  return yyparse();
+  int out = yyparse();
+  return out;
 }

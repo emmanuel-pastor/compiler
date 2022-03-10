@@ -10,8 +10,8 @@ L [a-zA-Z]
 [ \t]+ ;
 [\n] {l++;};
 "main" return tMain;
-"{" return tOCB;
-"}" return tCCB;
+"{" {incr_scope(); return tOCB;};
+"}" {return tCCB;};
 "const" return tConst;
 "int" return tInt;
 "+" return tAdd;
@@ -35,7 +35,7 @@ L [a-zA-Z]
 "printf" return tPrintf;
 [\/]{2}.* return tCom;
 {D}+(e{D}+)? { yylval.nb = (int) strtold(yytext, NULL); return tValInt; }	
-{L}({L}|{D}|\_)* return tId;
+{L}({L}|{D}|\_)* {yylval.var = strdup(yytext); return tId; }
 . return tError;
 %%
 int yywrap()

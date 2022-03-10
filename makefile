@@ -5,7 +5,7 @@ BIN=compiler
 CC=gcc
 CFLAGS=-Wall -g
 
-OBJ=y.tab.o lex.yy.o
+OBJ=y.tab.o lex.yy.o symb_table.o
 
 all: $(BIN)
 
@@ -22,5 +22,5 @@ $(BIN): $(OBJ)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
 
 clean:
-	rm $(OBJ) y.tab.c y.tab.h lex.yy.c y.output $(BIN)
+	rm $(OBJ) y.tab.c y.tab.h lex.yy.c y.output symb_table.o $(BIN)
 
