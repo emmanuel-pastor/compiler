@@ -4,7 +4,6 @@
 
 typedef struct Symbol {
     char* name;
-    char* type;
     int addr;
     int scope;
 } Symbol;
@@ -14,7 +13,7 @@ int top_index = 0;
 int scope = -1;
 
 void push_symb(char* name) {
-	Symbol symb = {name, "int", top_index, scope};
+	Symbol symb = {name, top_index, scope};
 	/*printf("pushed: ");
 	print_symb(symb);*/
 	symb_table[top_index] = symb;
@@ -24,7 +23,7 @@ void push_symb(char* name) {
 void pop_symb() {
 	/*printf("poped: ");
 	print_symb(symb_table[top_index-1]);*/
-	Symbol nullSymb = {NULL, NULL, 0, 0};
+	Symbol nullSymb = {NULL, 0, 0};
 	symb_table[top_index-1] = nullSymb;
 	top_index--;
 }
@@ -66,5 +65,5 @@ void print_symb_table() {
 }
 
 void print_symb(Symbol symb) {
-  	printf("{name=%s, type=%s, addr=%d, scope=%d}\n", symb.name, symb.type, symb.addr, symb.scope);
+  	printf("{name=%s, addr=%d, scope=%d}\n", symb.name, symb.addr, symb.scope);
 }

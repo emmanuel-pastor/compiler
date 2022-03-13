@@ -2,7 +2,6 @@
 #define SYMB_TABLE_H
 typedef struct Symbol {
     char* name;
-    char* type;
     int addr;
     int scope;
 } Symbol;
