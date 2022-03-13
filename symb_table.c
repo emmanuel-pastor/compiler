@@ -28,15 +28,15 @@ void pop_symb() {
 	top_index--;
 }
 
-int exists_symb(char* name) {
+int exists_symb(char* name, int inAnyScope) {
 	int found = 0;
-	int i = 0;
-	
-	while(!found && symb_table[i].name != NULL && i < MAX_SYMB) {
-		if(strcmp(symb_table[i].name,name)) {
+	int i = top_index-1;
+
+	while(!found && symb_table[i].name != NULL && i >= 0) {
+		if(!strcmp(symb_table[i].name,name) && inAnyScope || !strcmp(symb_table[i].name,name) && !inAnyScope && symb_table[i].scope == scope) {
 			found = 1;
 		}
-		i++;
+		i--;
 	}
 	return found;
 }

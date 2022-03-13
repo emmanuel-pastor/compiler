@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "symb_table.h"
+#define IN_ANY_SCOPE 0
 
 void yyerror(char *s);
 typedef struct AsmInst {
@@ -49,9 +50,21 @@ DivMul: DivMul tMul Term
 Term: tOP Expr tCP
     | tValInt
     | tId;
-Declaration: tInt tId tSC {push_symb($2);};
-Affectation: tInt tId tEQ Expr tSC {push_symb($2);}
-            | tId tEQ Expr tSC;
+Declaration: tInt tId tSC {
+	if(exists_symb($2, IN_ANY_SCOPE)) {
+		fprintf(stderr, "The variable \"%s\" has already been declared\n", $2);
+		return 1;
+	} else {
+		push_symb($2);
+	}};
+Affectation: tInt tId tEQ Expr tSC {
+	if(exists_symb($2, IN_ANY_SCOPE)) {
+		fprintf(stderr, "The variable \"%s\" has already been declared\n", $2);
+		return 1;
+	} else {
+		push_symb($2);
+	}};
+	| tId tEQ Expr tSC;
 Print: tPrintf tOP Expr tCP tSC;
 Return: tReturn Expr tSC;
 %%
