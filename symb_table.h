@@ -11,5 +11,5 @@ int exists_symb(char* name);
 void incr_scope();
 void decr_scope();
 void print_symb_table();
-void print_symb();
+void print_symb(Symbol symb);
 #endif

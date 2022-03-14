@@ -70,5 +70,6 @@ Return: tReturn Expr tSC;
 int main(void) {
   // yydebug=1;
   int out = yyparse();
+  print_asm_table();
   return out;
 }
