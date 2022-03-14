@@ -2,17 +2,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "symb_table.h"
+#include "asm_table.h"
 #define IN_CURRENT_SCOPE 0
 #define IN_ANY_SCOPE 1
 
 void yyerror(char *s);
-typedef struct AsmInst {
-    char* operator;
-    char* op1;
-    char* op2;
-    char* op3;
-} AsmInst;
-AsmInst asm_table[1024];
 %}
 %union { int nb; char* var; }
 %token tMain tOCB tCCB tConst tInt tAdd tSub tMul tDiv tInf tSup tEQEQ tDiff tAnd tOr tEQ tOP tCP tComma tSC tIf tWhile tReturn tCom tPrintf tError
