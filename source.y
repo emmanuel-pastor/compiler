@@ -90,12 +90,15 @@ Affectation: tInt tId tEQ Expr {free_all_temp_addr();} tSC {
 			fprintf(stderr, "The variable \"%s\" has already been declared\n", $2);
 			return 1;
 		} else {
-			push_symb($2);
+			int addr = push_symb($2);
+			add_asm_2(COP, addr, $4);
 		}};
 	| tId tEQ Expr {free_all_temp_addr();} tSC {
 		if(!exists_symb($1, IN_ANY_SCOPE)) {
 			fprintf(stderr, "Unknown variable \"%s\"\n", $1);
 			return 1;
+		} else {
+			add_asm_2(COP, get_symb_addr($1), $3);
 		}};
 Print: tPrintf tOP Expr {free_all_temp_addr();} tCP tSC {
 			add_asm_1(PRI, $3);
@@ -105,5 +108,6 @@ Return: tReturn Expr {free_all_temp_addr();} tSC;
 int main(void) {
   // yydebug=1;
   int out = yyparse();
+  print_asm_table();
   return out;
 }
