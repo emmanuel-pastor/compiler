@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "symb_table.h"
 #define MAX_SYMB 200
+#define TEMP_ADDR1 201
+#define TEMP_ADDR2 202
 
 typedef struct Symbol {
     char* name;
@@ -11,13 +14,16 @@ typedef struct Symbol {
 Symbol symb_table[MAX_SYMB];
 int top_index = 0;
 int scope = -1;
+int tempAddr1Busy = 0;
+int tempAddr2Busy = 0;
 
-void push_symb(char* name) {
+int push_symb(char* name) {
 	Symbol symb = {name, top_index, scope};
 	/*printf("pushed: ");
 	print_symb(symb);*/
 	symb_table[top_index] = symb;
 	top_index++;
+	return top_index-1;
 }
 
 void pop_symb() {
@@ -52,6 +58,33 @@ void decr_scope() {
 		i--;
 	}
 	scope--;
+}
+
+int get_symb_addr(char* name) {
+	int i = top_index-1;
+	
+	while(i >= 0) {
+		if(!strcmp(symb_table[i].name,name)) {
+			return symb_table[i].addr;
+		}
+		i--;
+	}
+	
+	fprintf(stderr, "Could not resolve symbol \"%s\"\n", name);
+	exit(1);
+}
+
+int use_temp_addr() {
+	if(!tempAddr1Busy) {
+		tempAddr1Busy = 1;
+		return TEMP_ADDR1;
+	}
+	tempAddr2Busy = 1;
+	return TEMP_ADDR2;
+}
+void free_all_temp_addr() {
+	tempAddr1Busy = 0;
+	tempAddr2Busy = 0;
 }
 
 void print_symb_table() {

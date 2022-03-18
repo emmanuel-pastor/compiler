@@ -5,13 +5,19 @@
 AsmInst asm_table[MAX_ASM_INST];
 int index = 0;
 
-void add_asm_2(Operator operator, char* op1, char* op2) {
+void add_asm_1(Operator operator, int op1) {
+	AsmInst inst = {operator, op1};
+	asm_table[index] = inst;
+	index++;
+}
+
+void add_asm_2(Operator operator, int op1, int op2) {
 	AsmInst inst = {operator, op1, op2};
 	asm_table[index] = inst;
 	index++;
 }
 
-void add_asm_3(Operator operator, char* op1, char* op2, char* op3) {
+void add_asm_3(Operator operator, int op1, int op2, int op3) {
 	AsmInst inst = {operator, op1, op2, op3};
 	asm_table[index] = inst;
 	index++;
@@ -40,9 +46,11 @@ char* asm_ope_to_string(Operator operator) {
 		case 9: str = "SUP"; break;
 		case 10: str = "EQU"; break;
 		case 11: str = "PRI"; break;
+		case 12: str = "AND"; break;
+		case 13: str = "OR"; break;
 	}
 	return str;
 }
 void print_asm_inst(AsmInst inst) {
-	printf("{ operator = %s, op1 = %s, op2 = %s, op3 = %s }\n", asm_ope_to_string(inst.operator), inst.op1, inst.op2, inst.op3);
+	printf("{operator = %s, op1 = %d, op2 = %d, op3 = %d}\n", asm_ope_to_string(inst.operator), inst.op1, inst.op2, inst.op3);
 }
