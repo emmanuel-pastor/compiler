@@ -1,97 +1,113 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "asm_table.h"
-#define MEM_MAX_INST 1024
+#define MAX_ASM_INST 1024
+#define MAX_MEM 220
 
-int mem_table[MEM_MAX_INST];
+int mem_table[MAX_MEM];
+AsmInst asm_table[MAX_ASM_INST];
 int i = 0;
 
-int main(int argc, char **argv)
+void launch_interpretor(int nb_inst)
 {
-    while (i < MEM_MAX_INST)
+    while (i < nb_inst)
     {
         switch (asm_table[i].operator)
         {
         case 0:
-            ADD(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
+            add(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
             i++;
+            break;
         case 1:
-            MUL(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
+            mul(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
             i++;
+            break;
         case 2:
-            SOU(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
+            sou(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
             i++;
+            break;
         case 3:
-            DIV(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
+            div_asm(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
             i++;
+            break;
         case 4:
-            COP(asm_table[i].op1, asm_table[i].op2);
+            cop(asm_table[i].op1, asm_table[i].op2);
             i++;
+            break;
         case 5:
-            AFC(asm_table[i].op1, asm_table[i].op2);
+            afc(asm_table[i].op1, asm_table[i].op2);
             i++;
+            break;
         case 6:
-            JMP(asm_table[i].op1);
+            jmp(asm_table[i].op1);
+            break;
         case 7:
-            JMF(asm_table[i].op1, asm_table[i].op2);
+            jmf(asm_table[i].op1, asm_table[i].op2);
+            break;
         case 8:
-            INF(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
+            inf(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
             i++;
+            break;
         case 9:
-            SUP(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
+            sup(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
             i++;
+            break;
         case 10:
-            EQU(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
+            equ(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
             i++;
+            break;
         case 11:
-            PRI(asm_table[i].op1);
+            pri(asm_table[i].op1);
             i++;
+            break;
         case 12:
-            AND(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
+            and(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
             i++;
+            break;
         case 13:
-            OR(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
+            or(asm_table[i].op1, asm_table[i].op2, asm_table[i].op3);
             i++;
+            break;
         }
     }
 }
 
-void ADD(int op1, int op2, int op3)
+void add(int op1, int op2, int op3)
 {
     mem_table[op1] = mem_table[op2] + mem_table[op3];
 }
 
-void MUL(int op1, int op2, int op3)
+void mul(int op1, int op2, int op3)
 {
     mem_table[op1] = mem_table[op2] * mem_table[op3];
 }
 
-void SOU(int op1, int op2, int op3)
+void sou(int op1, int op2, int op3)
 {
     mem_table[op1] = mem_table[op2] - mem_table[op3];
 }
 
-void DIV(int op1, int op2, int op3)
+void div_asm(int op1, int op2, int op3)
 {
-    mem_table[op1] = mem_table[op2] / mem_table[op3];
+    mem_table[op1] = (int) (mem_table[op2] / mem_table[op3]);
 }
 
-void COP(int op1, int op2)
+void cop(int op1, int op2)
 {
     mem_table[op1] = mem_table[op2];
 }
 
-void AFC(int op1, int op2)
+void afc(int op1, int op2)
 {
     mem_table[op1] = op2;
 }
 
-void JMP(int op1)
+void jmp(int op1)
 {
     i = op1;
 }
 
-void JMF(int op1, int op2)
+void jmf(int op1, int op2)
 {
     if (!mem_table[op1])
     {
@@ -103,32 +119,32 @@ void JMF(int op1, int op2)
     }
 }
 
-void INF(int op1, int op2, int op3)
+void inf(int op1, int op2, int op3)
 {
     mem_table[op1] = mem_table[op2] < mem_table[op3];
 }
 
-void SUP(int op1, int op2, int op3)
+void sup(int op1, int op2, int op3)
 {
     mem_table[op1] = mem_table[op2] > mem_table[op3];
 }
 
-void EQU(int op1, int op2, int op3)
+void equ(int op1, int op2, int op3)
 {
     mem_table[op1] = mem_table[op2] == mem_table[op3];
 }
 
-void PRI(int op1, int op2, int op3)
+void pri(int op1)
 {
-    printf(mem_table[op1]);
+    printf("%d\n", mem_table[op1]);
 }
 
-void AND(int op1, int op2, int op3)
+void and(int op1, int op2, int op3)
 {
     mem_table[op1] = mem_table[op2] && mem_table[op3];
 }
 
-void OR(int op1, int op2, int op3)
+void or(int op1, int op2, int op3)
 {
     mem_table[op1] = mem_table[op2] || mem_table[op3];
 }

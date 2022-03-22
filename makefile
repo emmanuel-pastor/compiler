@@ -5,7 +5,7 @@ BIN=compiler
 CC=gcc
 CFLAGS=-Wall -g
 
-OBJ=y.tab.o lex.yy.o symb_table.o asm_table.o
+OBJ=y.tab.o lex.yy.o symb_table.o asm_table.o interpretor.o
 
 all: $(BIN)
 

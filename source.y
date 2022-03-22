@@ -133,6 +133,7 @@ Return: tReturn Expr {free_all_temp_addr();} tSC;
 int main(void) {
   // yydebug=1;
   int out = yyparse();
-  print_asm_table();
+  //print_asm_table();
+  //launch_interpretor(get_nb_inst());
   return out;
 }
