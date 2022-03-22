@@ -12,6 +12,7 @@ void incr_scope();
 void decr_scope();
 int get_symb_addr(char* name);
 int use_temp_addr();
+void free_temp_addr(int addr);
 void free_all_temp_addr();
 void print_symb_table();
 void print_symb(Symbol symb);

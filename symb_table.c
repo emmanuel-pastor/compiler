@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include "symb_table.h"
 #define MAX_SYMB 200
-#define TEMP_ADDR1 201
-#define TEMP_ADDR2 202
+#define NB_TEMP_ADDR 9
 
 typedef struct Symbol {
     char* name;
@@ -14,8 +13,7 @@ typedef struct Symbol {
 Symbol symb_table[MAX_SYMB];
 int top_index = 0;
 int scope = -1;
-int tempAddr1Busy = 0;
-int tempAddr2Busy = 0;
+int temp_addr_table[NB_TEMP_ADDR];
 
 int push_symb(char* name) {
 	Symbol symb = {name, top_index, scope};
@@ -75,16 +73,25 @@ int get_symb_addr(char* name) {
 }
 
 int use_temp_addr() {
-	if(!tempAddr1Busy) {
-		tempAddr1Busy = 1;
-		return TEMP_ADDR1;
+	for(int i=0; i < NB_TEMP_ADDR; i++) {
+		if(temp_addr_table[i] == 0) {
+			temp_addr_table[i] = 1;
+			return i + MAX_SYMB;
+		}
 	}
-	tempAddr2Busy = 1;
-	return TEMP_ADDR2;
+	fprintf(stderr, "All temporary addresses are busy\n");
+	exit(1);
 }
+void free_temp_addr(int addr) {
+	if(addr >= MAX_SYMB) {
+		temp_addr_table[addr-MAX_SYMB] = 0;
+	}
+}
+
 void free_all_temp_addr() {
-	tempAddr1Busy = 0;
-	tempAddr2Busy = 0;
+	for(int i=0; i < NB_TEMP_ADDR; i++) {
+		temp_addr_table[i] = 0;
+	}
 }
 
 void print_symb_table() {
