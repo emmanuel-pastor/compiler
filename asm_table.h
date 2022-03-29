@@ -12,6 +12,7 @@ typedef struct AsmInst {
 void add_asm_1(Operator operator, int op1);
 void add_asm_2(Operator operator, int op1, int op2);
 void add_asm_3(Operator operator, int op1, int op2, int op3);
+void update_last_if_inst();
 int get_nb_inst();
 void print_asm_table();
 char* asm_ope_to_string(Operator operator);

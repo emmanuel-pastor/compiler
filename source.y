@@ -26,7 +26,7 @@ Inst: If
     | Print
     | Return
     | tCom;
-If: tIf tOP Expr {free_all_temp_addr();} tCP Body;
+If: tIf tOP Expr {free_all_temp_addr();} tCP {add_asm_2(JMF, $3, -1);} Body {update_last_if_inst();};
 While: tWhile tOP Expr {free_all_temp_addr();} tCP Body;
 Expr: BoolExpr tAnd Expr {
      	free_temp_addr($1);

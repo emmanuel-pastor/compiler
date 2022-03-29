@@ -2,10 +2,11 @@ int main() {
     int a;
     int b = 2;
     
-    a = 3;
+    a = 2;
     if (a+3 == 5) {
         int c = 0;
-        a = a+3;
+        printf(c);
+        a = a+4;
     }
     printf(a);
     
