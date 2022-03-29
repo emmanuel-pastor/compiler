@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "symb_table.h"
 #define MAX_SYMB 200
-#define NB_TEMP_ADDR 9
+#define NB_TEMP_ADDR 20
 
 typedef struct Symbol {
     char* name;
@@ -79,7 +79,7 @@ int use_temp_addr() {
 			return i + MAX_SYMB;
 		}
 	}
-	fprintf(stderr, "All temporary addresses are busy\n");
+	fprintf(stderr, "All temporary addresses are being used\n");
 	exit(1);
 }
 void free_temp_addr(int addr) {

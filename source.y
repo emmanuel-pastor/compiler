@@ -29,73 +29,73 @@ Inst: If
 If: tIf tOP Expr {free_all_temp_addr();} tCP Body;
 While: tWhile tOP Expr {free_all_temp_addr();} tCP Body;
 Expr: BoolExpr tAnd Expr {
+     	free_temp_addr($1);
      	int temp = use_temp_addr();
      	add_asm_3(AND, temp, $1, $3);
-     	if($1 != temp) free_temp_addr($1);
         if($3 != temp) free_temp_addr($3);
      	$$ = temp;
      }
      | BoolExpr tOr Expr {
+     	free_temp_addr($1);
      	int temp = use_temp_addr();
      	add_asm_3(OR, temp, $1, $3);
-     	if($1 != temp) free_temp_addr($1);
         if($3 != temp) free_temp_addr($3);
      	$$ = temp;
      }
 	| BoolExpr { $$ = $1; };
 BoolExpr: ArithExpr tSup ArithExpr {
-		int temp = use_temp_addr();
+     	free_temp_addr($1);
+     	int temp = use_temp_addr();
 		add_asm_3(SUP, temp, $1, $3);
-		if($1 != temp) free_temp_addr($1);
         if($3 != temp) free_temp_addr($3);
 		$$ = temp;
 	}
 	| ArithExpr tInf ArithExpr {
-		int temp = use_temp_addr();
+     	free_temp_addr($1);
+     	int temp = use_temp_addr();
 		add_asm_3(INF, temp, $1, $3);
-		if($1 != temp) free_temp_addr($1);
         if($3 != temp) free_temp_addr($3);
 		$$ = temp;
 	}
 	| ArithExpr tEQEQ ArithExpr {
-		int temp = use_temp_addr();
+		free_temp_addr($1);
+     	int temp = use_temp_addr();
 		add_asm_3(EQU, temp, $1, $3);
-		if($1 != temp) free_temp_addr($1);
         if($3 != temp) free_temp_addr($3);
 		$$ = temp;
 	}
 	| ArithExpr tDiff ArithExpr
 	| ArithExpr { $$ = $1; } ;
 ArithExpr: ArithExpr tAdd DivMul {
-    	int temp = use_temp_addr();
+     	free_temp_addr($1);
+     	int temp = use_temp_addr();
      	add_asm_3(ADD, temp, $1, $3);
-     	if($1 != temp) free_temp_addr($1);
         if($3 != temp) free_temp_addr($3);
      	$$ = temp;
 	}
      | ArithExpr tSub DivMul {
-    	int temp = use_temp_addr();
+    	free_temp_addr($1);
+     	int temp = use_temp_addr();
      	add_asm_3(SOU, temp, $1, $3);
-     	if($1 != temp) free_temp_addr($1);
         if($3 != temp) free_temp_addr($3);
      	$$ = temp;
      }
      | DivMul { $$ = $1; };
 DivMul: DivMul tMul Term {
-        	int temp = use_temp_addr();
-        	add_asm_3(MUL, temp, $1, $3);
-        	if($1 != temp) free_temp_addr($1);
-        	if($3 != temp) free_temp_addr($3);
-        	$$ = temp;	
-		}
-        | DivMul tDiv Term {
-        	int temp = use_temp_addr();
-        	add_asm_3(DIV, temp, $1, $3);
-        	if($1 != temp) free_temp_addr($1);
-        	if($3 != temp) free_temp_addr($3);
-        	$$ = temp;
-        }
-        | Term { $$ = $1; };
+ 		free_temp_addr($1);
+ 		int temp = use_temp_addr();
+    	add_asm_3(MUL, temp, $1, $3);
+    	if($3 != temp) free_temp_addr($3);
+    	$$ = temp;	
+	}
+    | DivMul tDiv Term {
+    	free_temp_addr($1);
+     	int temp = use_temp_addr();
+    	add_asm_3(DIV, temp, $1, $3);
+    	if($3 != temp) free_temp_addr($3);
+    	$$ = temp;
+    }
+    | Term { $$ = $1; };
 Term: tOP Expr tCP { $$ = $2; }
     | tValInt {
     	int temp = use_temp_addr();
