@@ -3,6 +3,8 @@
 #define MAX_ASM_INST 1024
 int index = 0;
 AsmInst asm_table[MAX_ASM_INST];
+int start_inst_nb = 0;
+
 void add_asm_1(Operator operator, int op1) {
 	AsmInst inst = {operator, op1};
 	asm_table[index] = inst;
@@ -21,21 +23,13 @@ void add_asm_3(Operator operator, int op1, int op2, int op3) {
 	index++;
 }
 
-void update_last_if_inst() {
-	int i = index;
-	int found = 0;
-	while(!found && i >= 0) {
-		AsmInst inst = asm_table[i];
-		if(inst.operator == JMF) {
-			found = 1;
-			asm_table[i] = (AsmInst) {inst.operator, inst.op1, index};
-		}
-		i--;
-	}
+int get_inst_nb() {
+	return index;
 }
 
-int get_nb_inst() {
-	return index;
+void update_jmf(int inst_to_modify, int new_value) {
+	AsmInst inst = asm_table[inst_to_modify];
+	asm_table[inst_to_modify] = (AsmInst) {inst.operator, inst.op1, new_value};
 }
 
 void print_asm_table() {

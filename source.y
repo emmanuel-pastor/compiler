@@ -3,10 +3,12 @@
 #include <stdio.h>
 #include "symb_table.h"
 #include "asm_table.h"
+#include "jmp_table.h"
 #define IN_CURRENT_SCOPE 0
 #define IN_ANY_SCOPE 1
 
 void yyerror(char *s);
+int start_inst = 0;
 %}
 %union { int nb; char* var; }
 %token tMain tOCB tCCB tConst tInt tAdd tSub tMul tDiv tInf tSup tEQEQ tDiff tAnd tOr tEQ tOP tCP tComma tSC tIf tWhile tReturn tCom tPrintf tError
@@ -26,8 +28,8 @@ Inst: If
     | Print
     | Return
     | tCom;
-If: tIf tOP Expr {free_all_temp_addr();} tCP {add_asm_2(JMF, $3, -1);} Body {update_last_if_inst();};
-While: tWhile tOP Expr {free_all_temp_addr();} tCP Body;
+If: tIf tOP Expr {free_all_temp_addr();} tCP {push_if_start(get_inst_nb()); add_asm_2(JMF, $3, -1);} Body {update_jmf(pop_if_start(), get_inst_nb());};
+While: tWhile tOP {push_while_start(get_inst_nb()); push_if_start(get_inst_nb());} Expr {free_all_temp_addr();} tCP {push_if_start(get_inst_nb()); add_asm_2(JMF, $4, -1);} Body {add_asm_1(JMP, pop_while_start()); update_jmf(pop_if_start(), get_inst_nb());};
 Expr: BoolExpr tAnd Expr {
      	free_temp_addr($1);
      	int temp = use_temp_addr();
@@ -134,6 +136,6 @@ int main(void) {
   // yydebug=1;
   int out = yyparse();
   //print_asm_table();
-  //launch_interpretor(get_nb_inst());
+  //launch_interpretor(get_inst_nb());
   return out;
 }

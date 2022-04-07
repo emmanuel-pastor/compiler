@@ -4,6 +4,7 @@
 #define MAX_SYMB 200
 #define NB_TEMP_ADDR 20
 
+//TODO: Move temp addr out fo symbol table
 typedef struct Symbol {
     char* name;
     int addr;
