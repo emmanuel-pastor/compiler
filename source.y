@@ -4,6 +4,7 @@
 #include "symb_table.h"
 #include "asm_table.h"
 #include "jmp_table.h"
+#include "interpreter.h"
 #define IN_CURRENT_SCOPE 0
 #define IN_ANY_SCOPE 1
 
@@ -136,6 +137,6 @@ int main(void) {
   // yydebug=1;
   int out = yyparse();
   //print_asm_table();
-  //launch_interpretor(get_inst_nb());
+  //launch_interpreter(get_inst_nb());
   return out;
 }

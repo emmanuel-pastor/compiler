@@ -8,7 +8,7 @@ int mem_table[MAX_MEM];
 AsmInst asm_table[MAX_ASM_INST];
 int i = 0;
 
-void launch_interpretor(int nb_inst)
+void launch_interpreter(int nb_inst)
 {
     while (i < nb_inst)
     {
