@@ -30,6 +30,7 @@ L [a-zA-Z]
 "," return tComma;
 ";" return tSC;
 "if" return tIf;
+"else" return tElse;
 "while" return tWhile;
 "return" return tReturn;
 "printf" return tPrintf;

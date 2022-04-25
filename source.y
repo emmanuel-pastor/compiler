@@ -12,7 +12,7 @@ void yyerror(char *s);
 int start_inst = 0;
 %}
 %union { int nb; char* var; }
-%token tMain tOCB tCCB tConst tInt tAdd tSub tMul tDiv tInf tSup tEQEQ tDiff tAnd tOr tEQ tOP tCP tComma tSC tIf tWhile tReturn tCom tPrintf tError
+%token tMain tOCB tCCB tConst tInt tAdd tSub tMul tDiv tInf tSup tEQEQ tDiff tAnd tOr tEQ tOP tCP tComma tSC tIf tElse tWhile tReturn tCom tPrintf tError
 %token <nb> tValInt
 %token <var> tId
 %type <nb> ArithExpr BoolExpr Expr DivMul Term
@@ -23,6 +23,7 @@ Body: tOCB Instructions tCCB {decr_scope();};
 Instructions: Inst Instructions
 	| ;
 Inst: If
+	| IfElse
     | While
     | Declaration
     | Affectation
@@ -30,6 +31,7 @@ Inst: If
     | Return
     | tCom;
 If: tIf tOP Expr {free_all_temp_addr();} tCP {push_if_start(get_inst_nb()); add_asm_2(JMF, $3, -1);} Body {update_jmf(pop_if_start(), get_inst_nb());};
+IfElse: If tElse Body;
 While: tWhile tOP {push_while_start(get_inst_nb()); push_if_start(get_inst_nb());} Expr {free_all_temp_addr();} tCP {push_if_start(get_inst_nb()); add_asm_2(JMF, $4, -1);} Body {add_asm_1(JMP, pop_while_start()); update_jmf(pop_if_start(), get_inst_nb());};
 Expr: BoolExpr tAnd Expr {
      	free_temp_addr($1);
