@@ -1,0 +1,15 @@
+int main() {
+	// result = n!
+	int n = 5;
+	int i = 1;
+	int result = 1;
+	
+	while(i < n or i == n) {
+		result = result * i;
+		i = i+1;
+	}
+	
+	printf(result);
+
+	return 0;
+}
