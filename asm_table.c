@@ -32,6 +32,11 @@ void update_jmf(int inst_to_modify, int new_value) {
 	asm_table[inst_to_modify] = (AsmInst) {inst.operator, inst.op1, new_value};
 }
 
+void update_jmp(int inst_to_modify, int new_value) {
+	AsmInst inst = asm_table[inst_to_modify];
+	asm_table[inst_to_modify] = (AsmInst) {inst.operator, new_value};
+}
+
 void print_asm_table() {
 	int i = 0;
 	

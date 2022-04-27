@@ -3,6 +3,7 @@
 #include "jmp_table.h"
 Node* while_root = NULL;
 Node* if_root = NULL;
+Node* else_root = NULL;
 
 Node* new_node(int inst_nb)
 {
@@ -24,7 +25,7 @@ void push_while_start(int inst_nb) {
 
 int pop_while_start() {
 	if (is_empty(while_root)) {
-    	fprintf(stderr, "Cannot pop body start, the stack is empty\n");
+    	fprintf(stderr, "Cannot pop while start, the stack is empty\n");
 		exit(1);
     }
     Node* temp = while_root;
@@ -43,11 +44,30 @@ void push_if_start(int inst_nb) {
 
 int pop_if_start() {
 	if (is_empty(if_root)) {
-    	fprintf(stderr, "Cannot pop body start, the stack is empty\n");
+    	fprintf(stderr, "Cannot pop if start, the stack is empty\n");
 		exit(1);
     }
     Node* temp = if_root;
     if_root = if_root->next;
+    int popped = temp->inst_nb;
+    free(temp);
+ 
+    return popped;
+}
+
+void push_else_start(int inst_nb) {
+	Node* stackNode = new_node(inst_nb);
+    stackNode->next = else_root;
+    else_root = stackNode;
+}
+
+int pop_else_start() {
+	if (is_empty(else_root)) {
+    	fprintf(stderr, "Cannot pop else start, the stack is empty\n");
+		exit(1);
+    }
+    Node* temp = else_root;
+    else_root = else_root->next;
     int popped = temp->inst_nb;
     free(temp);
  

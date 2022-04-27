@@ -23,15 +23,15 @@ Body: tOCB Instructions tCCB {decr_scope();};
 Instructions: Inst Instructions
 	| ;
 Inst: If
-	| IfElse
     | While
     | Declaration
     | Affectation
     | Print
     | Return
     | tCom;
-If: tIf tOP Expr {free_all_temp_addr();} tCP {push_if_start(get_inst_nb()); add_asm_2(JMF, $3, -1);} Body {update_jmf(pop_if_start(), get_inst_nb());};
-IfElse: If tElse Body;
+If: tIf tOP Expr {free_all_temp_addr();} tCP {push_if_start(get_inst_nb()); add_asm_2(JMF, $3, -1);} Body Else;
+Else: tElse {push_else_start(get_inst_nb()); add_asm_1(JMP, -1); update_jmf(pop_if_start(), get_inst_nb());} Body {update_jmp(pop_else_start(), get_inst_nb());}
+	| {update_jmf(pop_if_start(), get_inst_nb());};
 While: tWhile tOP {push_while_start(get_inst_nb()); push_if_start(get_inst_nb());} Expr {free_all_temp_addr();} tCP {push_if_start(get_inst_nb()); add_asm_2(JMF, $4, -1);} Body {add_asm_1(JMP, pop_while_start()); update_jmf(pop_if_start(), get_inst_nb());};
 Expr: BoolExpr tAnd Expr {
      	free_temp_addr($1);

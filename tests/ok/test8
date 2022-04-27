@@ -1,0 +1,24 @@
+int main() {
+	int a = 0;
+	int b = 0;
+	
+	if (a > 4 or a == 4) {
+		if(a == 4) {
+			b = 4;
+			printf(b);
+		} else {
+			b = 5;
+			printf(b);
+		}
+	} else {
+		if (b > 2) {
+			b = 3;
+			printf(b);
+		} else {
+			b = 2;
+			printf(b);
+		}
+	}
+	
+	return 0;
+}

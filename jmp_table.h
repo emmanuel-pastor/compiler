@@ -9,4 +9,6 @@ void push_while_start(int inst_nb);
 int pop_while_start();
 void push_if_start(int inst_nb);
 int pop_if_start();
+void push_else_start(int inst_nb);
+int pop_else_start();
 #endif
