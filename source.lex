@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "y.tab.h"
-int l = 1;
+extern int line;
 %}
 D [0-9]
 L [a-zA-Z]
 %%
 [ \t]+ ;
-[\n] {l++;};
+[\n] {line++;};
 "main" return tMain;
 "{" {incr_scope(); return tOCB;};
 "}" {return tCCB;};
@@ -43,4 +43,4 @@ int yywrap()
 {
 return 1 ;
 }
-int yyerror(char *s) { fprintf(stderr, "%s on line %d near %s\n", s, l, yytext);}
+int yyerror(char *s) { fprintf(stderr, "%s on line %d near %s\n", s, line, yytext);}
