@@ -8,7 +8,7 @@
 #define IN_CURRENT_SCOPE 0
 #define IN_ANY_SCOPE 1
 
-int line = 1;
+extern int yylineno;
 void yyerror(char *s);
 int start_inst = 0;
 %}
@@ -196,7 +196,7 @@ Declaration:
 	tSC
 		{
 			if(exists_symb($2, IN_CURRENT_SCOPE)) {
-				fprintf(stderr, "The variable \"%s\" on line %d has already been declared\n", $2, line);
+				fprintf(stderr, "The variable \"%s\" on line %d has already been declared\n", $2, yylineno);
 				return 1;
 			} else {
 				push_symb($2);
@@ -211,7 +211,7 @@ Affectation:
 	tSC
 		{
 			if(exists_symb($2, IN_CURRENT_SCOPE)) {
-				fprintf(stderr, "The variable \"%s\" on line %d has already been declared\n", $2, line);
+				fprintf(stderr, "The variable \"%s\" on line %d has already been declared\n", $2, yylineno);
 				return 1;
 			} else {
 				int addr = push_symb($2);
@@ -226,7 +226,7 @@ Affectation:
 	tSC
 		{
 			if(!exists_symb($1, IN_ANY_SCOPE)) {
-				fprintf(stderr, "Unknown variable \"%s\" on line %d\n", $1, line);
+				fprintf(stderr, "Unknown variable \"%s\" on line %d\n", $1, yylineno);
 				return 1;
 			} else {
 				add_asm_2(COP, get_symb_addr($1), $3);
