@@ -1,23 +1,34 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "asm_table.h"
 #define MAX_ASM_INST 1024
 int index = 0;
 extern AsmInst asm_table[MAX_ASM_INST];
 int start_inst_nb = 0;
 
+void checkInstructionMemory() {
+    if(index >= MAX_ASM_INST) {
+        fprintf(stderr, "The instruction memory is full (more than %d instructions)\n", MAX_ASM_INST);
+        exit(EXIT_FAILURE);
+    }
+}
+
 void add_asm_1(Operator operator, int op1) {
+    checkInstructionMemory();
 	AsmInst inst = {operator, op1};
 	asm_table[index] = inst;
 	index++;
 }
 
 void add_asm_2(Operator operator, int op1, int op2) {
+    checkInstructionMemory();
 	AsmInst inst = {operator, op1, op2};
 	asm_table[index] = inst;
 	index++;
 }
 
 void add_asm_3(Operator operator, int op1, int op2, int op3) {
+    checkInstructionMemory();
 	AsmInst inst = {operator, op1, op2, op3};
 	asm_table[index] = inst;
 	index++;

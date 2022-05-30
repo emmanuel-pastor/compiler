@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "symb_table.h"
 #define MAX_SYMB 200
-#define NB_TEMP_ADDR 20
+#define NB_TEMP_ADDR 15
 
-//TODO: Move temp addr out fo symbol table
+//TODO: Move temp addr out of symbol table
 typedef struct Symbol {
     char* name;
     int addr;
@@ -17,17 +18,17 @@ int scope = -1;
 int temp_addr_table[NB_TEMP_ADDR];
 
 int push_symb(char* name) {
+    if (top_index >= MAX_SYMB) {
+        fprintf(stderr, "The data memory is full (more than %d variables)\n", MAX_SYMB);
+        exit(EXIT_FAILURE);
+    }
 	Symbol symb = {name, top_index, scope};
-	/*printf("pushed: ");
-	print_symb(symb);*/
 	symb_table[top_index] = symb;
 	top_index++;
 	return top_index-1;
 }
 
 void pop_symb() {
-	/*printf("poped: ");
-	print_symb(symb_table[top_index-1]);*/
 	Symbol nullSymb = {NULL, 0, 0};
 	symb_table[top_index-1] = nullSymb;
 	top_index--;
@@ -38,7 +39,7 @@ int exists_symb(char* name, int inAnyScope) {
 	int i = top_index-1;
 
 	while(!found && symb_table[i].name != NULL && i >= 0) {
-		if(!strcmp(symb_table[i].name,name) && inAnyScope || !strcmp(symb_table[i].name,name) && !inAnyScope && symb_table[i].scope == scope) {
+		if((!strcmp(symb_table[i].name,name) && inAnyScope) || (!strcmp(symb_table[i].name,name) && !inAnyScope && symb_table[i].scope == scope)) {
 			found = 1;
 		}
 		i--;
@@ -61,16 +62,16 @@ void decr_scope() {
 
 int get_symb_addr(char* name) {
 	int i = top_index-1;
-	
+
 	while(i >= 0) {
 		if(!strcmp(symb_table[i].name,name)) {
 			return symb_table[i].addr;
 		}
 		i--;
 	}
-	
+
 	fprintf(stderr, "Could not resolve symbol \"%s\"\n", name);
-	exit(1);
+	exit(EXIT_FAILURE);
 }
 
 int use_temp_addr() {
@@ -80,8 +81,8 @@ int use_temp_addr() {
 			return i + MAX_SYMB;
 		}
 	}
-	fprintf(stderr, "All temporary addresses are being used\n");
-	exit(1);
+	fprintf(stderr, "All temporary addresses are being used. Your code may contain an arithmetic expression which is too long.\n");
+	exit(EXIT_FAILURE);
 }
 void free_temp_addr(int addr) {
 	if(addr >= MAX_SYMB) {
@@ -95,6 +96,10 @@ void free_all_temp_addr() {
 	}
 }
 
+void print_symb(Symbol symb) {
+    printf("{name=%s, addr=%d, scope=%d}\n", symb.name, symb.addr, symb.scope);
+}
+
 void print_symb_table() {
   Symbol symb = symb_table[0];
   int i = 1;
@@ -103,8 +108,4 @@ void print_symb_table() {
   	symb = symb_table[i];
   	i++;
   }
-}
-
-void print_symb(Symbol symb) {
-  	printf("{name=%s, addr=%d, scope=%d}\n", symb.name, symb.addr, symb.scope);
 }

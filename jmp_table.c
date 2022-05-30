@@ -26,7 +26,7 @@ void push_while_start(int inst_nb) {
 int pop_while_start() {
 	if (is_empty(while_root)) {
     	fprintf(stderr, "Cannot pop while start, the stack is empty\n");
-		exit(1);
+		exit(EXIT_FAILURE);
     }
     Node* temp = while_root;
     while_root = while_root->next;
@@ -45,7 +45,7 @@ void push_if_start(int inst_nb) {
 int pop_if_start() {
 	if (is_empty(if_root)) {
     	fprintf(stderr, "Cannot pop if start, the stack is empty\n");
-		exit(1);
+		exit(EXIT_FAILURE);
     }
     Node* temp = if_root;
     if_root = if_root->next;
@@ -64,7 +64,7 @@ void push_else_start(int inst_nb) {
 int pop_else_start() {
 	if (is_empty(else_root)) {
     	fprintf(stderr, "Cannot pop else start, the stack is empty\n");
-		exit(1);
+		exit(EXIT_FAILURE);
     }
     Node* temp = else_root;
     else_root = else_root->next;
