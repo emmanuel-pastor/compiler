@@ -67,5 +67,5 @@ char* asm_ope_to_string(Operator operator) {
 	return str;
 }
 void print_asm_inst(AsmInst inst) {
-	printf("{operator = %s, op1 = %d, op2 = %d, op3 = %d}\n", asm_ope_to_string(inst.operator), inst.op1, inst.op2, inst.op3);
+	printf("%s %d %d %d\n", asm_ope_to_string(inst.operator), inst.op1, inst.op2, inst.op3);
 }
