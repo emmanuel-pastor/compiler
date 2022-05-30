@@ -2,7 +2,7 @@
 #include "asm_table.h"
 #define MAX_ASM_INST 1024
 int index = 0;
-AsmInst asm_table[MAX_ASM_INST];
+extern AsmInst asm_table[MAX_ASM_INST];
 int start_inst_nb = 0;
 
 void add_asm_1(Operator operator, int op1) {
