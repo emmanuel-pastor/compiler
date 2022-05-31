@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "symb_table.h"
-#define MAX_SYMB 200
-#define NB_TEMP_ADDR 15
+#define MAX_SYMB 240
+#define NB_TEMP_ADDR 16
 
 //TODO: Move temp addr out of symbol table
 typedef struct Symbol {

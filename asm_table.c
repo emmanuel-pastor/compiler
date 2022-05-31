@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "asm_table.h"
-#define MAX_ASM_INST 1024
+#define MAX_ASM_INST 256
 int index = 0;
 extern AsmInst asm_table[MAX_ASM_INST];
 int start_inst_nb = 0;

@@ -13,11 +13,11 @@ run_tests() {
 	
 	for filename in $tests_path; do
 		if [ $isKO -eq 0 ]; then
-			command="cat $filename | $COMPILER_PATH"
+			command="$COMPILER_PATH $filename > /dev/null"
 			command_passed_icon="✔️  "
 			command_failed_icon="❌  "
 		else
-			command="cat $filename | $COMPILER_PATH 2> /dev/null"
+			command="$COMPILER_PATH $filename &> /dev/null"
 			command_passed_icon="❌  "
 			command_failed_icon="✔️  "
 		fi
