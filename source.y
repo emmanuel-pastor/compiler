@@ -8,6 +8,7 @@
 #define IN_CURRENT_SCOPE 0
 #define IN_ANY_SCOPE 1
 
+extern FILE *yyin;
 extern int yylineno;
 void yyerror(char *s);
 int start_inst = 0;
@@ -246,10 +247,32 @@ Return:
 		{free_all_temp_addr();}
 	tSC;
 %%
-int main(void) {
-  // yydebug=1;
-  int out = yyparse();
-  //print_asm_table();
-  //launch_interpreter(get_inst_nb());
-  return out;
+int main(int argc, char **argv) {
+    if(argc != 2 && argc != 4 && (argv[2] != "-o" || argv[2] != NULL)) {
+        fprintf(stderr, "Usage: %s <input file> [-o <output file>]\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    FILE *in_file = fopen(argv[1], "r");
+    if(in_file == NULL) {
+        fprintf(stderr, "Failed to open file \"%s\".\n", argv[1]);
+        exit(EXIT_FAILURE);
+    }
+    yyin = in_file;
+
+    int out = yyparse();
+
+    if(argc == 4) {
+        FILE *out_file = fopen(argv[3], "w");
+        if(out_file == NULL) {
+            fprintf(stderr, "Failed to open file \"%s\".\n", argv[3]);
+            exit(EXIT_FAILURE);
+        }
+        print_asm_table(out_file);
+        fclose(out_file);
+    } else if (argc == 2) {
+        print_asm_table(stdout);
+    }
+    //launch_interpreter(get_inst_nb());
+    return out;
 }

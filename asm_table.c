@@ -48,12 +48,12 @@ void update_jmp(int inst_to_modify, int new_value) {
 	asm_table[inst_to_modify] = (AsmInst) {inst.operator, new_value};
 }
 
-void print_asm_table() {
+void print_asm_table(FILE* output) {
 	int i = 0;
 	
 	while(i < MAX_ASM_INST && i < index) {
-		printf("%d: ", i);
-		print_asm_inst(asm_table[i]);
+		fprintf(output, "%d: ", i);
+		print_asm_inst(output, asm_table[i]);
 		i++;
 	}
 }
@@ -75,8 +75,7 @@ char* asm_ope_to_string(Operator operator) {
 		case 12: str = "AND"; break;
 		case 13: str = "OR"; break;
 	}
-	return str;
 }
-void print_asm_inst(AsmInst inst) {
-	printf("%s %d %d %d\n", asm_ope_to_string(inst.operator), inst.op1, inst.op2, inst.op3);
+void print_asm_inst(FILE* output, AsmInst inst) {
+	fprintf(output, "%s %d %d %d\n", asm_ope_to_string(inst.operator), inst.op1, inst.op2, inst.op3);
 }

@@ -15,7 +15,7 @@ void add_asm_3(Operator operator, int op1, int op2, int op3);
 int get_inst_nb();
 void update_jmf(int inst_to_modify, int new_value);
 void update_jmp(int inst_to_modify, int new_value);
-void print_asm_table();
+void print_asm_table(FILE*);
 char* asm_ope_to_string(Operator operator);
-void print_asm_inst(AsmInst inst);
+void print_asm_inst(FILE*, AsmInst inst);
 #endif
