@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "asm_table.h"
-#define MAX_ASM_INST 1024
-#define MAX_MEM 220
+#define MAX_ASM_INST 256
+#define MAX_MEM 256
 
 int mem_table[MAX_MEM];
 AsmInst asm_table[MAX_ASM_INST];

@@ -62,7 +62,6 @@ While:
 	tOP
 		{
 			push_while_start(get_inst_nb());
-			push_if_start(get_inst_nb());
 		}
 	Expr
 		{free_all_temp_addr();}
